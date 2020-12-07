@@ -5,6 +5,7 @@ export default function reducers(state = [] , action){
             ...state,
             {
                 id: action.id,
+                title: action.title,
                 text: action.text
             }
         ]

@@ -12,15 +12,20 @@ class Form extends React.Component{
         this.createMemo = this.createMemo.bind(this);
     }
 
+    updateTitle = (event) => {this.setState({title: event.target.value})}
     updateContent = (event) => {this.setState({content:event.target.value})}
 
     createMemo(){
-        this.props.dispatch(this.state.content);
+        this.props.dispatch(this.state.title,this.state.content);
     }
 
     render(){
         return (
             <React.Fragment>
+                <span>Title: </span>
+                <input value={this.state.title} onChange={this.updateTitle}/>
+                <br/>
+                <span>Content: </span>
                 <input value={this.state.content} onChange={this.updateContent}/>
                 <button onClick={this.createMemo}>OK</button>
             </React.Fragment>)
@@ -30,8 +35,8 @@ class Form extends React.Component{
 
 
 const mapDispatchToProps = (dispatch) => ({
-    dispatch: content => {
-        dispatch(createMemo(content))
+    dispatch: (title,content) => {
+        dispatch(createMemo(title,content))
     }
 })
 

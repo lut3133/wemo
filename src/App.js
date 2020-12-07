@@ -1,12 +1,12 @@
 import './App.css'
 import React from "react"
-import {Header} from "./components/Header"
-import FileList from "./components/MemoList"
+import Routes from "./components/Routes"
+
 function App() {
   return (
       <div>
-        <Header/>
-        <FileList/>
+          <span>Home</span>
+          <Routes/>
       </div>
   );
 }

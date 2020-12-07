@@ -13,7 +13,7 @@ class MemoList extends React.Component{
                 <span>Number of Files:{totalValue}</span> <br/>
                 <Form/>
                 {state.map(memo =>
-                    <List text = {memo.text} textLength = {memo.text.length} dispatchDeleteMemo = {()=> deleteMemo(memo.text)}/>)}
+                    <List title = {memo.title} text = {memo.text} textLength = {memo.text.length} dispatchDeleteMemo = {()=> deleteMemo(memo.title,memo.text)}/>)}
             </React.Fragment>)
     }
 }
@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        deleteMemo: text => dispatch(deleteMemo(text))
+        deleteMemo: (title,text) => dispatch(deleteMemo(title,text))
     }
 }
 
