@@ -10,6 +10,8 @@ var cur_path = path.resolve('./fs');
 
 var cors = require('cors');
 
+const util = require('util');
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -58,6 +60,58 @@ router.get('/get-file-infos', function(req, res, next) {
     res.json(data);
 
     console.log(lsinfo_li);
+
+  });
+});
+
+const readFile = util.promisify(fs.readFile);
+
+function readFileFunction(file_name) {
+  return readFile(file_name);
+}
+
+
+
+router.get('/get-file-contents-infos',  function(req, res, next) {
+  console.log(cur_path);
+  fs.readdir(cur_path, function(err,data){
+
+
+
+    data.reverse();
+    data.forEach(async function(element,index){
+      const stat = fs.statSync(path.join(cur_path,element));
+      let type;
+      let size;
+      let file_content = "-";
+
+      if(stat.isFile()){
+        size = stat["size"].toString() + " B";
+        type = "file";
+
+        file_content = await readFileFunction(path.join(cur_path,element));
+        console.log(file_content.toString());
+      }
+      else if(stat.isDirectory()){
+        size = "-";
+        type = "dir";
+      }
+      data[index] ={
+        name : element,
+        content : file_content.toString(),
+        modificationDate : stat.mtime.getFullYear().toString()
+            + "-" + (stat.mtime.getMonth()+1).toString()
+            + "-" + stat.mtime.getDate().toString(),
+        size : size,
+        type : type
+      }
+      if(index === data.length-1){
+        console.log("lkajkljsld");
+        res.json(data);
+      }
+    });
+
+    //res.json(data);
 
   });
 });

@@ -1,21 +1,53 @@
 import React from "react"
-import Form from "./Form"
 import List from "./List"
 import {connect} from 'react-redux'
 import {deleteMemo} from "../actions/memo";
+import {getLsAndContent} from "../requests/requests";
 
 class MemoList extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            existMemos : []
+        };
+    }
+
+    callAPI(){
+        getLsAndContent().then(res => {
+            console.log(res);
+            this.setState({existMemos : res});
+            console.log(this.state.existMemos[0]);
+        });
+
+    }
+
+    componentDidMount() {
+        this.callAPI();
+    }
 
     render() {
-        const {state, totalValue, deleteMemo} = this.props;
+        const {state, totalValue, deleteMemo, history} = this.props;
         return(
             <React.Fragment>
-                <span>Number of Files:{totalValue}</span> <br/>
-                <Form/>
                 {state.map(memo =>
-                    <List title = {memo.title} text = {memo.text} textLength = {memo.text.length} dispatchDeleteMemo = {()=> deleteMemo(memo.title,memo.text)}/>)}
+                    <List title = {memo.title}
+                          text = {memo.text}
+                          textLength = {memo.text.length}
+                          dispatchDeleteMemo = {()=> deleteMemo(memo.title,memo.text)}/>
+                          )}
+                {this.state.existMemos.map(memo =>{
+                    if(memo.type === "file"){
+                        return <List title = {memo.name}
+                                     text = {memo.content}
+                                     textLength = {memo.content.length}
+                                     dispatchDeleteMemo = {()=> deleteMemo(memo.name,memo.content)}/>
+                    }
+                }
+                )}
             </React.Fragment>)
     }
+
+
 }
 
 

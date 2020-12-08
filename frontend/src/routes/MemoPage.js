@@ -2,10 +2,11 @@ import '../App.css';
 import React from "react";
 import {Header} from "../components/Header";
 import MemoList from "../components/MemoList";
-import {Route,Link, Switch} from 'react-router-dom';
-import Home from "../components/Home";
+import {Link} from 'react-router-dom';
+import Form from "../components/Form";
 
-export default class MemosPage extends React.Component {
+
+export default class MemoPage extends React.Component {
 
     constructor(props){
         super(props);
@@ -13,11 +14,11 @@ export default class MemosPage extends React.Component {
 
     render()
     {
+        console.log(this.props.location.state.name);
+        console.log(this.props);
         return (
             <div>
-                <Header/>
-                <MemoList/>
-                <Link to="/">home</Link>
+                <Form/>
             </div>
         );
     }

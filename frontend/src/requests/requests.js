@@ -27,3 +27,7 @@ export async function getLs(){
     const result = await instance.get('/get-file-infos');
     return result.data
 }
+export async function getLsAndContent(){
+    const result = await instance.get('/get-file-contents-infos');
+    return result.data
+}

@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.headerText {
+  text-align : center;
+}
+
+ul{
+  list-style:none;
+}
+
+.briefMemo {
+  text-align : center;
+  background: blue;
+  display: table; margin-left: auto; margin-right: auto;
+}
