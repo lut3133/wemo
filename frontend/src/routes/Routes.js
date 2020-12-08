@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Home from "../components/Home"
-import MemosPage from "../routes/MemosPage";
-import FilesPage from "../routes/FilesPage";
-import LoginPage from "../routes/LoginPage";
+import MemosPage from "./MemosPage";
+import FilesPage from "./FilesPage";
+import LoginPage from "./LoginPage";
 
 class Routes extends React.Component {
     render() {

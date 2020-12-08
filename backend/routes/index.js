@@ -8,6 +8,9 @@ var path = require('path');
 var qs = require('querystring');
 var cur_path = path.resolve('./fs');
 
+var cors = require('cors');
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -144,5 +147,17 @@ router.post('/rename', function(req, res, next) {
   res.send();
 });
 
+router.post('/api/login',cors(), function(req, res, next) {
+  const {id,password} = req.body;
+
+  console.log(id,password);
+  res.send();
+});
+
+router.options('/api/login', function(req, res, next) {
+
+  console.log(req.headers);
+  res.send();
+});
 
 module.exports = router;

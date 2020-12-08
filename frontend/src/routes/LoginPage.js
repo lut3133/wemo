@@ -1,30 +1,40 @@
 import '../App.css';
 import React from "react";
+import {postLogin} from "../requests/requests";
+import { withRouter } from 'react-router-dom';
 
 class LoginPage extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            id: "",
-            password: ""
+            id: React.createRef(),
+            password: React.createRef()
         }
+        this.submit = this.submit.bind(this)
     }
 
-    updateId = (event) => {this.setState({id: event.target.value})}
-    updatePassword = (event) => {this.setState({password:event.target.value})}
+    async submit(){
+        const data = {
+            id: this.state.id.current.value,
+            password: this.state.password.current.value
+        }
+        const echo_result = await postLogin(data);
+        console.log(echo_result);
+        this.props.history.push("/");
+    }
 
     render() {
         return (
             <div>
                 <span>LoginPage</span>
                 <br/>
-                <input value={this.state.id} onChange={this.updateId}/>
+                <input ref={this.state.id}/>
                 <br/>
-                <input value={this.state.password} onChange={this.updatePassword}/>
-                <button>Login</button>
+                <input ref={this.state.password}/>
+                <button onClick={this.submit}>Login</button>
             </div>
         );
     }
 }
 
-export default LoginPage;
+export default withRouter(LoginPage)
