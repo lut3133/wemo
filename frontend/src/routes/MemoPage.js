@@ -18,7 +18,10 @@ export default class MemoPage extends React.Component {
         console.log(this.props);
         return (
             <div>
-                <Form/>
+                <Link to="/home">
+                    <Header/>
+                </Link>
+                <Form fileName = {this.props.location.state.name} fileContent={this.props.location.state.content}/>
             </div>
         );
     }

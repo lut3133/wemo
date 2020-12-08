@@ -9,13 +9,17 @@ class Form extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = { content: ""};
-        this.createMemo = this.createMemo.bind(this);
+        this.state = {
+            title: this.props.fileName,
+            content: this.props.fileContent,
+        };
+        this.editMemo = this.editMemo.bind(this);
+        //this.createMemo = this.createMemo.bind(this);
     }
 
     updateTitle = (event) => {this.setState({title: event.target.value})}
     updateContent = (event) => {this.setState({content:event.target.value})}
-
+/*
     createMemo(){
         this.props.dispatch(this.state.title,this.state.content);
         const data = {
@@ -34,6 +38,24 @@ class Form extends React.Component{
                 <span>Content: </span>
                 <input value={this.state.content} onChange={this.updateContent}/>
                 <button onClick={this.createMemo}>OK</button>
+            </React.Fragment>)
+    }
+
+ */
+    editMemo(){
+
+    }
+    render(){
+        return (
+            <React.Fragment>
+                <div class = "oneMemo">
+                    <input type= "text" class = "oneMemoTitle" value={this.state.title} onChange={this.updateTitle}/>
+                    <br/>
+                    <hr/>
+                    <input type="text" class = "oneMemoContent" value={this.state.content} onChange={this.updateContent}/>
+                    <br/>
+                    <button class = "oneMemoSaveButton" onClick={this.editMemo}>저장</button>
+                </div>
             </React.Fragment>)
     }
 }
