@@ -22,3 +22,8 @@ export async function postDeleteFile({file_name}){
     const result = await instance.post('/rmFile',{file_name});
     return result.data
 }
+
+export async function getLs(){
+    const result = await instance.get('/get-file-infos');
+    return result.data
+}
