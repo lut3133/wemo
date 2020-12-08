@@ -16,7 +16,7 @@ export default class List extends React.Component{
     deleteMemo(){
         this.props.dispatchDeleteMemo();
         const data = {
-            file_name : this.state.title
+            file_name : this.state.title + ".txt"
         }
         postDeleteFile(data);
     }

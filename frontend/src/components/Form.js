@@ -19,7 +19,7 @@ class Form extends React.Component{
     createMemo(){
         this.props.dispatch(this.state.title,this.state.content);
         const data = {
-            file_name : this.state.title,
+            file_name : this.state.title + ".txt",
             file_data : this.state.content
         }
         postMakeFile(data);
