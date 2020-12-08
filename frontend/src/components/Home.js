@@ -6,6 +6,8 @@ class Home extends React.Component {
         return (
             <div>
                 <h1>home</h1>
+                <Link to="/register">register-page</Link>
+                <br/>
                 <Link to="/login">login-page</Link>
                 <br/>
                 <Link to="/memo">memos-page</Link>

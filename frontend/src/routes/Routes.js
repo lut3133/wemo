@@ -4,6 +4,7 @@ import Home from "../components/Home"
 import MemosPage from "./MemosPage";
 import FilesPage from "./FilesPage";
 import LoginPage from "./LoginPage";
+import RegisterPage from "./RegisterPage";
 
 class Routes extends React.Component {
     render() {
@@ -13,6 +14,7 @@ class Routes extends React.Component {
                     <Route path='/memo' component={MemosPage}/>
                     <Route path='/file' component={FilesPage}/>
                     <Route path='/login' component={LoginPage}/>
+                    <Route path='/register' component={RegisterPage}/>
                     <Route path='/' component={Home}/>
                 </Switch>
             </Router>

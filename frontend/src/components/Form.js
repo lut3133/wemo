@@ -1,6 +1,7 @@
 import React from "react"
 import {createMemo} from "../actions/memo";
 import { connect } from 'react-redux'
+import {postMakeFile} from "../requests/requests";
 
 
 
@@ -17,6 +18,11 @@ class Form extends React.Component{
 
     createMemo(){
         this.props.dispatch(this.state.title,this.state.content);
+        const data = {
+            file_name : this.state.title,
+            file_data : this.state.content
+        }
+        postMakeFile(data);
     }
 
     render(){

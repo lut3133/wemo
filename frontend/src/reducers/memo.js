@@ -1,4 +1,6 @@
-export default function reducers(state = [] , action){
+import {postLogin, postMakeFile} from "../requests/requests";
+
+export default function reducers(state = [], action) {
     if (action.type === 'CREATE_MEMO') {
         console.log("CREATE_MEMO")
         return [
@@ -9,8 +11,7 @@ export default function reducers(state = [] , action){
                 text: action.text
             }
         ]
-    }
-    else if (action.type === 'DELETE_MEMO') {
+    } else if (action.type === 'DELETE_MEMO') {
         console.log("DELETE_MEMO")
         return state.filter((item) => item.text !== action.text)
 
