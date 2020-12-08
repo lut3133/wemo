@@ -23,7 +23,10 @@ export default class List extends React.Component{
         postDeleteFile(data);
         window.location.replace("/memo");
     }
-
+/*
+    <button onClick={this.createMemo}>수정</button>
+    <button onClick={this.deleteMemo}>삭제</button>
+ */
     gotoMemoEditPage(){
     }
 
@@ -40,14 +43,11 @@ export default class List extends React.Component{
                     }
                 }}>
                     <div class="briefMemo">
-                        <span>Title: </span>
-                        <input value={this.state.title} onChange={this.updateTitle}/>
+                        <input type="text" class="manyMemoTitle" value={this.state.title.split(".")[0]} onChange={this.updateTitle}/>
                         <br/>
-                        <span>Content: </span>
-                        <input value={this.state.content} onChange={this.updateContent}/>
+                        <hr/>
+                        <input type="text" class="manyMemoContent" value={this.state.content} onChange={this.updateContent}/>
                         <br/>
-                        <button onClick={this.createMemo}>수정</button>
-                        <button onClick={this.deleteMemo}>삭제</button>
                     </div>
                 </Link>)
     }
