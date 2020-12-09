@@ -6,8 +6,8 @@ var fs = require('fs');
 var url = require('url');
 var path = require('path');
 var qs = require('querystring');
-var cur_path = path.resolve('./fs');
-
+var root_path = path.resolve('./fs');
+var cur_path = ""
 var cors = require('cors');
 
 const util = require('util');
@@ -19,8 +19,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/get-file-infos', function(req, res, next) {
-  console.log(cur_path);
-  fs.readdir(cur_path, function(err,data){
+  console.log(path.join(root_path,cur_path));
+  fs.readdir(path.join(root_path,cur_path), function(err,data){
 
     lsinfo_li = "";
     lsinfo_li += "<li class=\"dir\">" +"<div" + " onclick='mvdir(this);'>" +".."+ "</div>"
@@ -29,7 +29,7 @@ router.get('/get-file-infos', function(req, res, next) {
     datas = [];
 
     data.forEach(function(element,index){
-      const stat = fs.statSync(path.join(cur_path,element));
+      const stat = fs.statSync(path.join(path.join(root_path,cur_path),element));
       let type;
       let element_onclick_content;
       let delete_onclick_content;
@@ -73,14 +73,14 @@ function readFileFunction(file_name) {
 
 
 router.get('/get-file-contents-infos',  function(req, res, next) {
-  console.log(cur_path);
-  fs.readdir(cur_path, function(err,data){
+  console.log(path.join(root_path,cur_path));
+  fs.readdir(path.join(root_path,cur_path), function(err,data){
 
 
 
     data.reverse();
     data.forEach(async function(element,index){
-      const stat = fs.statSync(path.join(cur_path,element));
+      const stat = fs.statSync(path.join(path.join(root_path,cur_path),element));
       let type;
       let size;
       let file_content = "-";
@@ -89,7 +89,7 @@ router.get('/get-file-contents-infos',  function(req, res, next) {
         size = stat["size"].toString() + " B";
         type = "file";
 
-        file_content = await readFileFunction(path.join(cur_path,element));
+        file_content = await readFileFunction(path.join(path.join(root_path,cur_path),element));
         console.log(file_content.toString());
       }
       else if(stat.isDirectory()){
@@ -119,7 +119,7 @@ router.get('/get-file-contents-infos',  function(req, res, next) {
 router.post('/cd', function(req, res, next) {
   const {dir_name} = req.body;
 
-  console.log(path.join(cur_path,dir_name));
+  console.log(path.join(path.join(root_path,cur_path),dir_name));
   cur_path = path.join(cur_path, dir_name);
   res.send();
 });
@@ -213,5 +213,15 @@ router.options('/api/login', function(req, res, next) {
   console.log(req.headers);
   res.send();
 });
+
+router.get('/pwd', function(req, res, next) {
+
+  let data = {
+    cur_path : cur_path
+  }
+  res.json(data);
+  res.send();
+});
+
 
 module.exports = router;

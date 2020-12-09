@@ -36,3 +36,13 @@ export async function postEditFile({file_name, file_data}){
     const result = await instance.post('/editfile',{file_name,file_data});
     return result.data
 }
+
+export async function getPwd(){
+    const result = await instance.get('/pwd');
+    return result.data
+}
+
+export async function postCd({dir_name}){
+    const result = await instance.post('/cd',{dir_name});
+    return result.data
+}
