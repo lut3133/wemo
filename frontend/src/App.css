@@ -60,6 +60,7 @@ li{
 }
 
 .oneMemoTitle {
+  box-sizing:border-box;
   text-align : left;
   width : 100%;
   padding-top: 10px;
@@ -67,11 +68,18 @@ li{
 }
 
 .oneMemoContent {
+  box-sizing:border-box;
   text-align : left;
   width : 100%;
+  height : 26em;
   padding-top: 10px;
   padding-left: 10px;
-  background-color : brown;
+  border: none;
+  resize: none;
+}
+
+.oneMemoContent:focus {
+  outline:none;
 }
 
 .oneMemoSaveButton {
@@ -140,28 +148,63 @@ a {
 }
 
 .filesInfo{
-  display: table;
+  width: 100%;
 }
 
-table{
+.fileTable{
+  width: 100%;
+  border-top: 1px solid #444444;
+  border-collapse: collapse;
+}
 
+th{
+  padding : 0.5em 0.5em 0.5em 0.5em;
+  border-bottom: 1px solid #444444;
 }
 
 td{
-  background-color : gray;
+  background-color : white;
   padding : 0.5em 0.5em 0.5em 0.5em;
-  border-color: red;
+  border-bottom: 1px solid #444444;
+
+}
+
+.currentPath{
+  padding-bottom: 1em;
 }
 
 .fileNametd{
+  width: 75%;
   text-align : left;
 }
+.fileNametd:hover{
+  cursor: pointer;
+  text-decoration:underline;
+}
 .fileModificationDate{
+  width: 10%;
   text-align : left;
 }
 
 .fileSize{
-  text-align : center;
+  width: 7%;
+  text-align : left;
+}
+
+.fileDelete{
+  width: 4%;
+}
+.fileDelete:hover{
+  cursor: pointer;
+  text-decoration:underline;
+}
+
+.fileOpen{
+  width: 4%;
+}
+.fileOpen:hover{
+  cursor: pointer;
+  text-decoration:underline;
 }
 
 .navBar{
@@ -183,6 +226,21 @@ td{
 
 .createMemo{
   position: fixed;
-  bottom: 7em;
-  right: 7em;
+  border-radius: 50%;
+  bottom: 5%;
+  right: 5%;
+
+
 }
+
+.createMemo:focus{
+  outline : none;
+}
+
+.createMemodiv{
+  background: aqua;
+  width: 100%;
+  height: 100%;
+}
+
+

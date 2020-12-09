@@ -5,6 +5,7 @@ import {deleteMemo} from "../actions/memo";
 import {connect} from "react-redux";
 import {Header} from "../components/Header";
 import {Link} from "react-router-dom";
+import NavBar from "../components/NavBar";
 
 class FilesPage extends React.Component {
 
@@ -13,6 +14,7 @@ class FilesPage extends React.Component {
         this.state = {
             file_info_list : []
         }
+        this.open = this.open.bind(this);
     }
 
     deleteMemo(fileName){
@@ -25,31 +27,84 @@ class FilesPage extends React.Component {
         window.location.replace("/memo");
     }
 
+    open(type){
+        if(type === "file"){
+
+        }
+        else if(type === "dir"){
+
+        }
+        window.location.replace("/home");
+    }
+
     render() {
         return (
             <div>
-                <Link to="/home">
-                    <Header/>
-                </Link>
+                <div class="currentPath">
+                    현재 위치:
+                </div>
                 <div class="filesInfo">
-                    <table>
-                        <th>파일이름</th>
+                    <table class="fileTable">
+                        <th>이름</th>
                         <th>수정 날짜</th>
                         <th>파일 크기</th>
                         <th> </th>
                         <th> </th>
-                        <th> </th>
-                    {this.state.file_info_list.map(file => <tr>
-                        <td class="fileNametd"> {file.name} </td>
-                        <td class="fileModificationDate"> {file.modificationDate}</td>
-                        <td class="fileSize"> {file.size}</td>
-                        <td onClick={()=> {
-                            if(file.type === "file"){
-                            deleteMemo(file.name,file.content);
-                            postDeleteFile({file_name: file.name});
-                            window.location.replace("/file");}}}>삭제</td>
-                        <td>열기</td>
-                    </tr>)}
+                        <tr>
+                            <td className="fileNametd"> .. </td>
+                            <td className="fileModificationDate"> </td>
+                            <td className="fileSize"> </td>
+                            <td className="fileDelete">삭제</td>
+                            <td className="fileOpen">열기</td>
+                        </tr>
+                        {this.state.file_info_list.map(file => {
+
+                            if(file.type ==="dir"){
+                                // request post cd
+                                return (<tr>
+                                    <td class="fileNametd" > {file.name} </td>
+                                    <td class="fileModificationDate"> {file.modificationDate}</td>
+                                    <td class="fileSize"> {file.size}</td>
+                                    <td className="fileDelete" onClick={() => {
+                                        if (file.type === "file") {
+                                            deleteMemo(file.name, file.content);
+                                            postDeleteFile({file_name: file.name});
+                                            window.location.replace("/file");
+                                        }
+                                    }}>삭제
+                                    </td>
+                                    <Link to="/memos">
+                                    <td className="fileOpen">열기</td>
+                                    </Link>
+                                </tr>)
+                            }
+                            else if(file.type === "file"){
+                                return (<tr>
+                                    <td class="fileNametd" > {file.name} </td>
+                                    <td class="fileModificationDate"> {file.modificationDate}</td>
+                                    <td class="fileSize"> {file.size}</td>
+                                    <td className="fileDelete" onClick={() => {
+                                        if (file.type === "file") {
+                                            deleteMemo(file.name, file.content);
+                                            postDeleteFile({file_name: file.name});
+                                            window.location.replace("/file");
+                                        }
+                                    }}>삭제
+                                    </td>
+                                    <Link to={{
+                                        pathname : "/memo",
+                                        state : {
+                                            name : file.name,
+                                            content : "asdasd"
+                                        }
+                                    }}>
+                                    <td className="fileOpen">열기</td>
+                                    </Link>
+                                </tr>)
+                            }
+
+                            }
+                        )}
                     </table>
                 </div>
             </div>

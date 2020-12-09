@@ -5,6 +5,7 @@ import MemoList from "../components/MemoList";
 import {Route,Link, Switch} from 'react-router-dom';
 import Home from "../components/Home";
 import MemosNavBar from "../components/MemosNavBar";
+import NavBar from "../components/NavBar";
 
 export default class MemosPage extends React.Component {
 
@@ -20,10 +21,6 @@ export default class MemosPage extends React.Component {
     {
         return (
             <div>
-                <Link to="/home">
-                    <Header/>
-                </Link>
-                <MemosNavBar/>
                 <MemoList/>
                 <Link to={{
                     pathname : "/memo",
@@ -32,7 +29,7 @@ export default class MemosPage extends React.Component {
                         content : ""
                     }
                 }}>
-                    <div>
+                    <div class = "createMemo">
                         <button class="createMemo">+</button>
                     </div>
                 </Link>

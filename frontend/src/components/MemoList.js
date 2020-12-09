@@ -28,7 +28,7 @@ class MemoList extends React.Component{
     render() {
         const {state, totalValue, deleteMemo, history} = this.props;
         return(
-            <React.Fragment>
+            <div>
                 {state.map(memo =>
                     <List title = {memo.title}
                           text = {memo.text}
@@ -44,7 +44,7 @@ class MemoList extends React.Component{
                     }
                 }
                 )}
-            </React.Fragment>)
+            </div>)
     }
 
 

@@ -7,10 +7,6 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <Link to="/home">
-                    <Header/>
-                </Link>
-                <NavBar/>
                 <Link to="/register">register-page</Link>
                 <br/>
                 <Link to="/login">login-page</Link>
