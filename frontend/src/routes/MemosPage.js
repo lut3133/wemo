@@ -12,6 +12,10 @@ export default class MemosPage extends React.Component {
         super(props);
     }
 
+    createMemo(){
+        window.location.replace("/memo");
+    }
+
     render()
     {
         return (
@@ -21,6 +25,17 @@ export default class MemosPage extends React.Component {
                 </Link>
                 <MemosNavBar/>
                 <MemoList/>
+                <Link to={{
+                    pathname : "/memo",
+                    state : {
+                        name : "",
+                        content : ""
+                    }
+                }}>
+                    <div>
+                        <button class="createMemo">+</button>
+                    </div>
+                </Link>
             </div>
         );
     }

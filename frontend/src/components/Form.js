@@ -1,7 +1,7 @@
 import React from "react"
 import {createMemo} from "../actions/memo";
 import { connect } from 'react-redux'
-import {postMakeFile} from "../requests/requests";
+import {postEditFile, postMakeFile} from "../requests/requests";
 
 
 
@@ -43,7 +43,12 @@ class Form extends React.Component{
 
  */
     editMemo(){
-
+        const data = {
+            file_name : this.state.title,
+            file_data : this.state.content
+        }
+        postEditFile(data);
+        window.location.replace("/memos");
     }
     render(){
         return (
@@ -54,7 +59,7 @@ class Form extends React.Component{
                     <hr/>
                     <input type="text" class = "oneMemoContent" value={this.state.content} onChange={this.updateContent}/>
                     <br/>
-                    <button class = "oneMemoSaveButton" onClick={this.editMemo}>저장</button>
+                    <button class = "oneMemoSaveButton" onClick={this.editMemo}>저sss장</button>
                 </div>
             </React.Fragment>)
     }

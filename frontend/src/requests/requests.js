@@ -31,3 +31,8 @@ export async function getLsAndContent(){
     const result = await instance.get('/get-file-contents-infos');
     return result.data
 }
+
+export async function postEditFile({file_name, file_data}){
+    const result = await instance.post('/editfile',{file_name,file_data});
+    return result.data
+}

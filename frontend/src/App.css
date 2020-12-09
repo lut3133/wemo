@@ -180,3 +180,9 @@ td{
 .navBarMenu:hover{
   background-color:gray;
 }
+
+.createMemo{
+  position: fixed;
+  bottom: 7em;
+  right: 7em;
+}
