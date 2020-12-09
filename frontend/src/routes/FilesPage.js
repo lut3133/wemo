@@ -1,6 +1,6 @@
 import '../App.css';
 import React from "react";
-import {getLs, getPwd, postCd, postDeleteFile} from "../requests/requests";
+import {getLs, getPwd, postCd, postDeleteFile, postRmDir} from "../requests/requests";
 import {deleteMemo} from "../actions/memo";
 import {connect} from "react-redux";
 import {Header} from "../components/Header";
@@ -17,6 +17,8 @@ class FilesPage extends React.Component {
         }
         this.open = this.open.bind(this);
         this.clickDirName = this.clickDirName.bind(this);
+        this.clickOpen = this.clickOpen.bind(this);
+        this.clickDeleteDir = this.clickDeleteDir.bind(this);
     }
 
     deleteMemo(fileName){
@@ -45,6 +47,20 @@ class FilesPage extends React.Component {
         postCd(data);
         window.location.replace("/file");
     }
+    clickOpen(dir_name){
+        let data = {
+            dir_name : dir_name
+        }
+        postCd(data);
+        window.location.replace("/memos");
+    }
+    clickDeleteDir(dir_name){
+        let data = {
+            dir_name : dir_name
+        }
+        postRmDir(data);
+        window.location.replace("/file");
+    }
 
     render() {
         return (
@@ -59,7 +75,7 @@ class FilesPage extends React.Component {
                         <th>파일 크기</th>
                         <th> </th>
                         <th> </th>
-                        {this.state.cur_path === "." ? null : <tr>
+                        {this.state.cur_path === "." || this.state.cur_path === "" ? null : <tr>
                             <td className="fileNametd" onClick={()=>{
                                 this.clickDirName("..");
                             }} > .. </td>
@@ -80,40 +96,53 @@ class FilesPage extends React.Component {
                                     <td class="fileModificationDate"> {file.modificationDate}</td>
                                     <td class="fileSize"> {file.size}</td>
                                     <td className="fileDelete" onClick={() => {
-                                        if (file.type === "file") {
-                                            deleteMemo(file.name, file.content);
-                                            postDeleteFile({file_name: file.name});
-                                            window.location.replace("/file");
-                                        }
+                                        this.clickDeleteDir(file.name);
                                     }}>삭제
                                     </td>
-                                    <Link to="/memos">
-                                    <td className="fileOpen">열기</td>
-                                    </Link>
+
+                                    <td className="fileOpen"onClick={()=>{
+                                        this.clickOpen(file.name);
+                                    }}>
+                                        <Link to="/memos">
+                                            열기
+                                        </Link>
+                                    </td>
                                 </tr>)
                             }
                             else if(file.type === "file"){
                                 return (<tr>
-                                    <td class="fileNametd" > {file.name} </td>
+                                    <td class="fileNametd" >
+                                        <Link to={{
+                                            pathname : "/memo",
+                                            state : {
+                                                name : file.name,
+                                                content : null
+                                            }
+                                        }}>
+                                            {file.name}
+                                        </Link>
+                                    </td>
                                     <td class="fileModificationDate"> {file.modificationDate}</td>
                                     <td class="fileSize"> {file.size}</td>
                                     <td className="fileDelete" onClick={() => {
-                                        if (file.type === "file") {
-                                            deleteMemo(file.name, file.content);
-                                            postDeleteFile({file_name: file.name});
-                                            window.location.replace("/file");
-                                        }
+                                        deleteMemo(file.name, file.content);
+                                        postDeleteFile({file_name: file.name});
+                                        window.location.replace("/file");
                                     }}>삭제
                                     </td>
-                                    <Link to={{
-                                        pathname : "/memo",
-                                        state : {
-                                            name : file.name,
-                                            content : "asdasd"
-                                        }
-                                    }}>
-                                    <td className="fileOpen">열기</td>
-                                    </Link>
+
+                                    <td className="fileOpen" >
+                                        <Link to={{
+                                            pathname : "/memo",
+                                            state : {
+                                                name : file.name,
+                                                content : null
+                                            }
+                                        }}>
+                                            열기
+                                        </Link>
+                                    </td>
+
                                 </tr>)
                             }
 
@@ -129,6 +158,7 @@ class FilesPage extends React.Component {
             this.setState({file_info_list : res});
         });
         getPwd().then(res =>{
+            console.log(res.cur_path);
             this.setState({cur_path : res.cur_path});
         })
     }

@@ -46,3 +46,13 @@ export async function postCd({dir_name}){
     const result = await instance.post('/cd',{dir_name});
     return result.data
 }
+
+export async function postRmDir({dir_name}){
+    const result = await instance.post('/rmdir',{dir_name});
+    return result.data
+}
+
+export async function postFileContent({file_name}){
+    const result = await instance.post('/readfile',{file_name});
+    return result.data
+}

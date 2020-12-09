@@ -1,7 +1,7 @@
 import React from "react"
 import {createMemo} from "../actions/memo";
 import { connect } from 'react-redux'
-import {postEditFile, postMakeFile} from "../requests/requests";
+import {postEditFile, postFileContent, postMakeFile} from "../requests/requests";
 import NavBar from "./NavBar";
 
 
@@ -79,6 +79,17 @@ class Form extends React.Component{
                     <button class = "oneMemoSaveButton" onClick={this.editMemo}>저장</button>
                 </div>
             </React.Fragment>)
+    }
+
+    componentDidMount() {
+        if(this.state.content === null){
+            let data = {
+                file_name : this.state.title
+            }
+            postFileContent(data).then(res =>{
+                this.setState({ content : res.file_content});
+            })
+        }
     }
 }
 

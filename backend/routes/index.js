@@ -127,8 +127,8 @@ router.post('/cd', function(req, res, next) {
 router.post('/mkdir', function(req, res, next) {
   const {new_dir_name} = req.body;
 
-  console.log(path.join(cur_path,new_dir_name));
-  fs.mkdir(path.join(cur_path,new_dir_name), function(err){
+  console.log(path.join(path.join(root_path,cur_path),new_dir_name));
+  fs.mkdir(path.join(path.join(root_path,cur_path),new_dir_name), function(err){
     if(err){
       console.log("mkdir err");
     }
@@ -139,8 +139,8 @@ router.post('/mkdir', function(req, res, next) {
 router.post('/readfile', function(req, res, next) {
   const {file_name} = req.body;
 
-  console.log(path.join(cur_path,file_name));
-  fs.readFile(path.join(cur_path,file_name),{encoding:"utf-8",flag:"r"}, function(err, data){
+  console.log(path.join(path.join(root_path,cur_path),file_name));
+  fs.readFile(path.join(path.join(root_path,cur_path),file_name),{encoding:"utf-8",flag:"r"}, function(err, data){
     if(err){
       console.log("readFile err");
       console.log(err);
@@ -154,8 +154,8 @@ router.post('/readfile', function(req, res, next) {
 router.post('/editfile', function(req, res, next) {
   const {file_name,file_data} = req.body;
 
-  console.log(path.join(cur_path,file_name));
-  fs.writeFile(path.join(cur_path,file_name),file_data, function(err){
+  console.log(path.join(path.join(root_path,cur_path),file_name));
+  fs.writeFile(path.join(path.join(root_path,cur_path),file_name),file_data, function(err){
     if(err){
       console.log("writefile err");
     }
@@ -166,8 +166,8 @@ router.post('/editfile', function(req, res, next) {
 router.post('/rmdir', function(req, res, next) {
   const {dir_name} = req.body;
 
-  console.log(path.join(cur_path,dir_name));
-  fs.rmdir(path.join(cur_path,dir_name), function(err){
+  console.log(path.join(path.join(root_path,cur_path),dir_name));
+  fs.rmdir(path.join(path.join(root_path,cur_path),dir_name), function(err){
     if(err){
       console.log("rmdir err");
       console.log(err);
@@ -180,8 +180,8 @@ router.post('/rmdir', function(req, res, next) {
 router.post('/rmFile', function(req, res, next) {
   const {file_name} = req.body;
 
-  console.log(path.join(cur_path,file_name));
-  fs.unlink(path.join(cur_path,file_name), function(err){
+  console.log(path.join(path.join(root_path,cur_path),file_name));
+  fs.unlink(path.join(path.join(root_path,cur_path),file_name), function(err){
     if(err){
       console.log("rmFile err");
     }
@@ -192,8 +192,8 @@ router.post('/rmFile', function(req, res, next) {
 router.post('/rename', function(req, res, next) {
   const {new_name,old_name} = req.body;
 
-  console.log(path.join(cur_path,new_name));
-  fs.rename(path.join(cur_path,old_name),path.join(cur_path,new_name), function(err){
+  console.log(path.join(path.join(root_path,cur_path),new_name));
+  fs.rename(path.join(path.join(root_path,cur_path),old_name),path.join(cur_path,new_name), function(err){
     if(err){
       console.log("rename err");
     }
@@ -220,7 +220,6 @@ router.get('/pwd', function(req, res, next) {
     cur_path : cur_path
   }
   res.json(data);
-  res.send();
 });
 
 
