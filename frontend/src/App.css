@@ -45,6 +45,10 @@ ul{
   list-style:none;
 }
 
+li{
+  list-style:none;
+}
+
 .oneMemo {
   text-align : right;
   background: white;
@@ -119,7 +123,7 @@ a {
 }
 
 .memosNavBar{
-  background-color : green;
+  background-color : black;
   padding-top : 1em;
   padding-bottom : 1em;
   padding-left : 1em;
@@ -127,9 +131,52 @@ a {
 }
 
 .folderSelect{
+  color: white;
   padding : 1em 1em 1em 1em;
 }
 
 .folderSelect:Hover{
-  background-color : white;
+  background-color : gray;
+}
+
+.filesInfo{
+  display: table;
+}
+
+table{
+
+}
+
+td{
+  background-color : gray;
+  padding : 0.5em 0.5em 0.5em 0.5em;
+  border-color: red;
+}
+
+.fileNametd{
+  text-align : left;
+}
+.fileModificationDate{
+  text-align : left;
+}
+
+.fileSize{
+  text-align : center;
+}
+
+.navBar{
+  background-color : black;
+  padding-top : 1em;
+  padding-bottom : 1em;
+  padding-left : 1em;
+  margin-bottom : 1em;
+}
+
+.navBarMenu{
+  color: white;
+  padding : 1em 1em 1em 1em;
+}
+
+.navBarMenu:hover{
+  background-color:gray;
 }

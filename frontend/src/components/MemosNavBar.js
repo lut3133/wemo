@@ -8,7 +8,7 @@ export default class MemosNavBar extends React.Component{
         const {dispatchDeleteMemo} = this.props
 
         return (
-            <div class="memosNavBar"><Link class="folderSelect" to="/file">폴더 선택</Link></div>
+            <div class="memosNavBar"><Link class="folderSelect" to="/file">메모 찾기</Link></div>
         )
     }
 }

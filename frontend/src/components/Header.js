@@ -2,6 +2,10 @@ import React from "react"
 
 export class Header extends React.Component{
     render(){
-        return <h1 class="headerText">Wemo</h1>;
+        return (
+            <div>
+                <h1 className="headerText">Wemo</h1>
+            </div>
+        )
     }
 }
