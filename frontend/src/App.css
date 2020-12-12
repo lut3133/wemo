@@ -259,6 +259,10 @@ td{
 
 }
 
+.createMemo:active{
+  background: lightgray;
+}
+
 .createMemo:focus{
   outline : none;
 }
@@ -301,3 +305,5 @@ td{
   text-decoration: none;
   cursor: pointer;
 }
+
+img{-webkit-user-drag: none;}

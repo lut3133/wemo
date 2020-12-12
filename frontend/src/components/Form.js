@@ -59,9 +59,19 @@ class Form extends React.Component{
         getStream('audio');
         console.log("skjklsd");
     }
-    stopRecordAudio(){
+    async stopRecordAudio() {
         stopStream('audio');
         console.log("skjklsd");
+        let fullBlob = new Blob(audioData, {
+            type: "audio/webm;codecs=opus",
+        });
+        console.log(fullBlob);
+
+
+        //let audioFile = new File([fullBlob], "filename")
+
+        postAudioFile(fullBlob);
+
     }
 
     render(){
@@ -92,6 +102,9 @@ class Form extends React.Component{
         }
     }
 }
+
+let audioData = [];
+let mediaRecorder;
 
 function getUserMedia(constraints) {
     // if Promise-based API is available, use it
@@ -128,13 +141,12 @@ function getStream (type) {
             console.log(stream);
             var mediaControl = document.querySelector(type);
 
-            const mime = ['audio/wav', 'audio.mpeg','audio/webm','audio/ogg'].filter(MediaRecorder.isTypeSupported)[0];
-            const videoRecoder = new MediaRecorder(stream,{mimeType : mime, audioBitsPerSecond:16000});
-            console.log(videoRecoder);
-            videoRecoder.start();
+            //const mime = ['audio/wav', 'audio.mpeg','audio/webm','audio/ogg'].filter(MediaRecorder.isTypeSupported)[0];
+            const mediaRecorder = new MediaRecorder(stream);
+            console.log(mediaRecorder);
+            mediaRecorder.start();
 
-            setTimeout(() => videoRecoder.stop(), 2000);
-            videoRecoder.addEventListener("dataavailable",handleVideoData);
+            mediaRecorder.addEventListener("dataavailable",saveBlobData);
 
             if ('srcObject' in mediaControl) {
                 mediaControl.srcObject = stream;
@@ -157,6 +169,10 @@ function stopStream (type) {
     const stream = media.srcObject;
     const tracks = stream.getTracks();
     tracks.forEach(track => track.stop());
+}
+
+const saveBlobData = (event) =>{
+    audioData.push(event.data);
 }
 
 
