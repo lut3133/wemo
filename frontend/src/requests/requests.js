@@ -56,3 +56,21 @@ export async function postFileContent({file_name}){
     const result = await instance.post('/readfile',{file_name});
     return result.data
 }
+
+export async function postMkDir({new_dir_name}){
+    const result = await instance.post('/mkdir',{new_dir_name});
+    return result.data
+}
+
+
+export async function postAudioFile({blob}){
+    console.log("aaaaaaaaaa");
+    console.log(blob.size+"size");
+    console.log(blob.size+"size");
+    let data ={
+        blob : blob
+    }
+    const result = await instance.post('/stt',data);
+    return result.data
+}
+

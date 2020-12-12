@@ -223,4 +223,44 @@ router.get('/pwd', function(req, res, next) {
 });
 
 
+router.post('/stt', function(req, res, next) {
+
+
+  var fs = require('fs');
+  var openApiURL = 'http://aiopen.etri.re.kr:8000/WiseASR/Recognition';
+  var access_key = 'da4c3be0-2a46-4113-9afa-f1fcffcaf7e2';
+  var languageCode = 'korean';
+  var audioFilePath = path.join(root_path,"a2002011001-e02-16kHz-[AudioTrimmer.com].wav");
+  var audioData;
+  console.log(audioFilePath);
+  audioData = fs.readFileSync(audioFilePath);
+
+  console.log(audioData);
+  console.log(audioData.toString('base64'));
+
+  var requestJson = {
+    'access_key': access_key,
+    'argument': {
+      'language_code': languageCode,
+      'audio': audioData.toString('base64')
+    }
+  };
+
+  var request = require('request');
+  var options = {
+    url: openApiURL,
+    body: JSON.stringify(requestJson),
+    headers: {'Content-Type':'application/json; charset=UTF-8'}
+  };
+  request.post(options, function (error, response, body) {
+    console.log('responseCode = ' + response.statusCode);
+    console.log('responseBody = ' + body);
+  });
+
+  //console.log(Buffer.from(audioData.toString('base64'), 'base64').toString('utf8'));
+
+  res.send();
+});
+
+
 module.exports = router;

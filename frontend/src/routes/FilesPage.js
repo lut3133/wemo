@@ -1,6 +1,6 @@
 import '../App.css';
 import React from "react";
-import {getLs, getPwd, postCd, postDeleteFile, postRmDir} from "../requests/requests";
+import {getLs, getPwd, postCd, postDeleteFile, postMkDir, postRmDir} from "../requests/requests";
 import {deleteMemo} from "../actions/memo";
 import {connect} from "react-redux";
 import {Header} from "../components/Header";
@@ -13,12 +13,15 @@ class FilesPage extends React.Component {
         super(props);
         this.state = {
             file_info_list : [],
-            cur_path : "."
+            cur_path : ".",
+            new_dir_name : ""
         }
         this.open = this.open.bind(this);
         this.clickDirName = this.clickDirName.bind(this);
         this.clickOpen = this.clickOpen.bind(this);
         this.clickDeleteDir = this.clickDeleteDir.bind(this);
+        this.clickNewFolderButtion = this.clickNewFolderButtion.bind(this);
+        this.clickRequestNeFolder = this.clickRequestNeFolder.bind(this);
     }
 
     deleteMemo(fileName){
@@ -61,12 +64,47 @@ class FilesPage extends React.Component {
         postRmDir(data);
         window.location.replace("/file");
     }
+    clickNewFolderButtion(){
+        var mkdirModal = document.getElementById("mkdirModal");
+        var mkdirBtn = document.getElementById("newFolderButton");
+        var span1 = document.getElementById("mkdirModalClose");
+
+        mkdirBtn.onclick = function() {
+            mkdirModal.style.display = "block";
+        }
+        span1.onclick = function() {
+            mkdirModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == mkdirModal) {
+                mkdirModal.style.display = "none";
+            }
+        }
+    }
+    clickRequestNeFolder(){
+        var span1 = document.getElementById("mkdirModalClose");
+        span1.click();
+        let data = {
+            new_dir_name : this.state.new_dir_name
+        }
+        postMkDir(data);
+        window.location.replace("/file");
+    }
+
+    updateNewDirName = (event) => {this.setState({new_dir_name: event.target.value})}
 
     render() {
         return (
             <div>
-                <div class="currentPath">
-                    현재 위치: /{this.state.cur_path === "." ? "" : this.state.cur_path}
+                <div class="wrapper">
+                    <div class="currentPath">
+                        현재 위치: /{this.state.cur_path === "." ? "" : this.state.cur_path}
+                    </div>
+                    <div class="newFolder">
+                        <button id="newFolderButton" onClick={this.clickNewFolderButtion}>새 폴더</button>
+
+                    </div>
                 </div>
                 <div class="filesInfo">
                     <table class="fileTable">
@@ -149,6 +187,15 @@ class FilesPage extends React.Component {
                             }
                         )}
                     </table>
+                </div>
+                <div id="mkdirModal" className="modal">
+                    <div className="modal-content">
+                        <span id="mkdirModalClose" className="close">&times;</span>
+                        <h2>폴더생성</h2>
+                        <span>폴더 이름:</span>
+                        <input id="newDirName" value={this.state.new_dir_name} onChange={this.updateNewDirName} type="text"/>
+                        <button onClick={this.clickRequestNeFolder}>폴더 생성</button>
+                    </div>
                 </div>
             </div>
         );

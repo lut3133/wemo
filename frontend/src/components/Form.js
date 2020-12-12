@@ -1,7 +1,7 @@
 import React from "react"
 import {createMemo} from "../actions/memo";
 import { connect } from 'react-redux'
-import {postEditFile, postFileContent, postMakeFile} from "../requests/requests";
+import {postAudioFile, postEditFile, postFileContent, postMakeFile, postSttTest} from "../requests/requests";
 import NavBar from "./NavBar";
 
 
@@ -125,14 +125,15 @@ function getStream (type) {
 
     getUserMedia(constraints)
         .then(function (stream) {
+            console.log(stream);
             var mediaControl = document.querySelector(type);
 
-
-            const videoRecoder = new MediaRecorder(stream);
+            const mime = ['audio/wav', 'audio.mpeg','audio/webm','audio/ogg'].filter(MediaRecorder.isTypeSupported)[0];
+            const videoRecoder = new MediaRecorder(stream,{mimeType : mime, audioBitsPerSecond:16000});
             console.log(videoRecoder);
             videoRecoder.start();
 
-            setTimeout(() => videoRecoder.stop(), 10000);
+            setTimeout(() => videoRecoder.stop(), 2000);
             videoRecoder.addEventListener("dataavailable",handleVideoData);
 
             if ('srcObject' in mediaControl) {
@@ -144,7 +145,7 @@ function getStream (type) {
                 mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
             }
 
-            //mediaControl.play();
+            mediaControl.play();
         })
         .catch(function (err) {
             alert('Error: ' + err);
@@ -164,11 +165,76 @@ const handleVideoData = (event) =>{
     console.log("dsdsd"+event);
     const { data } = event;
 
+    let blobData ={
+        blob : data
+    }
+    data.arrayBuffer().then(buffer =>{
+        //postSttTest(encode(buffer));
+        console.log(buffer);
+        buffer = new Int16Array(buffer);
+        console.log(buffer+"ddddd");
+        var downsampleBuffer = function (buffer, sampleRate, outSampleRate) {
+            if (outSampleRate == sampleRate) {
+                return buffer;
+            }
+            if (outSampleRate > sampleRate) {
+                throw "downsampling rate show be smaller than original sample rate";
+            }
+            var sampleRateRatio = sampleRate / outSampleRate;
+            var newLength = Math.round(buffer.length / sampleRateRatio);
+            var result = new Int16Array(newLength);
+            var offsetResult = 0;
+            var offsetBuffer = 0;
+            while (offsetResult < result.length) {
+                var nextOffsetBuffer = Math.round((offsetResult + 1) * sampleRateRatio);
+                var accum = 0, count = 0;
+                for (var i = offsetBuffer; i < nextOffsetBuffer && i < buffer.length; i++) {
+                    accum += buffer[i];
+                    count++;
+                }
+
+                result[offsetResult] = Math.min(1, accum / count)*0x7FFF;
+                offsetResult++;
+                offsetBuffer = nextOffsetBuffer;
+            }
+            return result.buffer;
+        }
+        console.log("downsampled"+downsampleBuffer(buffer,48000,16000).byteLength)
+        let buffer1 = downsampleBuffer(buffer,48000,16000);
+        //console.log(buffer1.arrayBuffer().toString('base64')+"dddsewssewewe");
+        const mime = ['audio/wav', 'audio.mpeg','audio/webm','audio/ogg'].filter(MediaRecorder.isTypeSupported)[0];
+        let bblob = new Blob([buffer1]);
+        bblob.arrayBuffer().then(data=>{
+            //postSttTest(encode(data));
+        })
+        const audioDownloadLink = document.createElement("a");
+        audioDownloadLink.href = URL.createObjectURL(bblob);
+        audioDownloadLink.download = "recorded1.wav";
+
+
+        // body에 append 해줘야겠죠
+        document.body.appendChild(audioDownloadLink);
+
+        // faking click. body에 append 했으니 클릭해서 다운로드를 해줘야 합니다.
+        audioDownloadLink.click();
+    })
+    postAudioFile(blobData);
+
     // 다운로드를 위해 a 태그를 만들어주고 href로 해당 data를 다운로드 받을 수 있게 url을 만듭시다
     const audioDownloadLink = document.createElement("a");
     audioDownloadLink.href = URL.createObjectURL(data);
-    console.log(data.text);
-    console.log(btoa(data));
+
+
+
+    var reader = new FileReader();
+    reader.readAsDataURL(data);
+    reader.onloadend = function() {
+        var base64data = reader.result;
+        //postSttTest(base64data);
+        //console.log(base64data);
+    }
+
+    console.log(data);
 
     // 다운로드 되는 파일의 이름. 확장자는 mp4 등 다양하게 가능하지만 오픈 소스인지 확인 합시다
     audioDownloadLink.download = "recorded.wav";
