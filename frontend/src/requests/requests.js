@@ -63,15 +63,21 @@ export async function postMkDir({new_dir_name}){
 }
 
 
-export async function postAudioFile(blob){
+export async function postAudioFile(blob,fileName){
     console.log("aaaaaaaaaa");
     var formData = new FormData();
     console.log(blob);
-    formData.append("blob",blob,"aaaa.webm");
+    formData.append("blob",blob,fileName);
     console.log(formData);
     const result = await instance.post('/saveAudioFile',formData,{headers: {
         'Content-Type': 'multipart/form-data'
     }});
+    return result.data
+}
+
+
+export async function postRename({old_name,new_name}){
+    const result = await instance.post('/rename',{old_name,new_name});
     return result.data
 }
 

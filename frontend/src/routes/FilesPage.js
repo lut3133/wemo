@@ -147,7 +147,43 @@ class FilesPage extends React.Component {
                                     </td>
                                 </tr>)
                             }
-                            else if(file.type === "file"){
+                            else if(file.type === "text"){
+                                return (<tr>
+                                    <td class="fileNametd" >
+                                        <Link to={{
+                                            pathname : "/memo",
+                                            state : {
+                                                name : file.name,
+                                                content : null
+                                            }
+                                        }}>
+                                            {file.name}
+                                        </Link>
+                                    </td>
+                                    <td class="fileModificationDate"> {file.modificationDate}</td>
+                                    <td class="fileSize"> {file.size}</td>
+                                    <td className="fileDelete" onClick={() => {
+                                        deleteMemo(file.name, file.content);
+                                        postDeleteFile({file_name: file.name});
+                                        window.location.replace("/file");
+                                    }}>삭제
+                                    </td>
+
+                                    <td className="fileOpen" >
+                                        <Link to={{
+                                            pathname : "/memo",
+                                            state : {
+                                                name : file.name,
+                                                content : null
+                                            }
+                                        }}>
+                                            열기
+                                        </Link>
+                                    </td>
+
+                                </tr>)
+                            }
+                            else if(file.type === "audio"){
                                 return (<tr>
                                     <td class="fileNametd" >
                                         <Link to={{

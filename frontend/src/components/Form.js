@@ -1,7 +1,14 @@
 import React from "react"
 import {createMemo} from "../actions/memo";
 import { connect } from 'react-redux'
-import {postAudioFile, postEditFile, postFileContent, postMakeFile, postSttTest} from "../requests/requests";
+import {
+    postAudioFile,
+    postEditFile,
+    postFileContent,
+    postMakeFile,
+    postRename,
+    postSttTest
+} from "../requests/requests";
 import NavBar from "./NavBar";
 
 
@@ -11,6 +18,7 @@ class Form extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            originalTitle :this.props.fileName,
             title: this.props.fileName,
             content: this.props.fileContent,
         };
@@ -47,11 +55,26 @@ class Form extends React.Component{
 
  */
     editMemo(){
+        console.log(this.state.title);
         const data = {
-            file_name : this.state.title+".txt",
+            file_name : this.state.originalTitle,
             file_data : this.state.content
         }
-        postEditFile(data);
+        postEditFile(data).then(()=>{
+            console.log("lkjakjsd");
+            if(this.state.originalTitle !== this.state.title){
+                let dataForRename = {
+                    old_name : this.state.originalTitle,
+                    new_name : this.state.title
+                }
+                console.log("lkjakjsd");
+                console.log(dataForRename.old_name);
+                console.log(dataForRename.new_name);
+
+                postRename(dataForRename);
+            }
+        });
+
         window.location.replace("/memos");
     }
 
@@ -82,11 +105,8 @@ class Form extends React.Component{
                     <br/>
                     <hr/>
                     <textarea placeholder="내용을 입력해주세요." class = "oneMemoContent" value={this.state.content} onChange={this.updateContent}></textarea>
-                    <br/>
-                    <audio controls></audio>
-                    <button class ="oneAudioSaveButton" onClick={this.startRecordAudio}>음성녹음</button>
-                    <button className="oneAudioSaveDoneButton" onClick={this.stopRecordAudio}>음성녹음종료</button>
-                    <button class = "oneMemoSaveButton" onClick={this.editMemo}>저장</button>
+                    <br/><br/><br/>
+                    <button id = "saveTextButton" onClick={this.editMemo}>저장</button>
                 </div>
             </React.Fragment>)
     }

@@ -34,21 +34,23 @@ router.get('/get-file-infos', function(req, res, next) {
     data.forEach(function(element,index){
       const stat = fs.statSync(path.join(path.join(root_path,cur_path),element));
       let type;
-      let element_onclick_content;
-      let delete_onclick_content;
       let size;
 
       if(stat.isFile()){
         size = stat["size"].toString() + " B";
-        type = "file";
-        element_onclick_content = "'readfile(this);'";
-        delete_onclick_content = "'rmfile(this.previousSibling)'";
+        let chunks = element.split(".");
+        if(chunks.length >=2){
+          if(chunks[chunks.length-1]==="txt"){
+            type = "text";
+          }
+          else if(chunks[chunks.length-1]==="webm" ){
+            type = "audio";
+          }
+        }
       }
       else if(stat.isDirectory()){
         size = "-";
         type = "dir";
-        element_onclick_content = "'mvdir(this);'";
-        delete_onclick_content = "'rmdir(this.previousSibling)'";
       }
       data[index] ={
         name : element,
@@ -91,15 +93,23 @@ router.get('/get-file-contents-infos',  function(req, res, next) {
       if(stat.isFile()){
         size = stat["size"].toString() + " B";
         type = "file";
-        let chunksOfElement = element.split(".");
 
         file_content = await readFileFunction(path.join(path.join(root_path,cur_path),element));
-        if(chunksOfElement.length >=2){
-          if(chunksOfElement[chunksOfElement.length-1] !== "txt"){
+        let chunks = element.split(".");
+        if(chunks.length >=2){
+          if(chunks[chunks.length-1]==="txt"){
+            type = "text";
+          }
+          else if(chunks[chunks.length-1]==="webm" ){
+            file_content = "";
+            type = "audio";
+          }
+          else{
             file_content = "-";
-            type = "non-txt";
+            type = "dir";
           }
         }
+
         console.log(file_content.toString());
       }
       else if(stat.isDirectory()){
@@ -203,7 +213,7 @@ router.post('/rename', function(req, res, next) {
   const {new_name,old_name} = req.body;
 
   console.log(path.join(path.join(root_path,cur_path),new_name));
-  fs.rename(path.join(path.join(root_path,cur_path),old_name),path.join(cur_path,new_name), function(err){
+  fs.rename(path.join(path.join(root_path,cur_path),old_name),path.join(path.join(root_path,cur_path),new_name), function(err){
     if(err){
       console.log("rename err");
     }

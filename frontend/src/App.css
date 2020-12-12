@@ -53,7 +53,7 @@ li{
   text-align : right;
   background: white;
   width: 80%;
-  height : 30em;
+  height : 31em;
   margin-left: 10%; margin-right: 10%;
   box-shadow: 0px 0px 15px 5px gray;
   border-radius: 5px;
@@ -258,10 +258,14 @@ td{
 
 
 }
+.createMemo:hover{
+  box-shadow: 0px 0px 15px 5px lightgray;
+}
 
 .createMemo:active{
   background: lightgray;
 }
+
 
 .createMemo:focus{
   outline : none;
@@ -307,3 +311,55 @@ td{
 }
 
 img{-webkit-user-drag: none;}
+
+
+.oneAudioTitle {
+  box-sizing:border-box;
+  text-align : left;
+  width : 100%;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.audioComponentsWrapper{
+  text-align: center;
+}
+
+.audioWrapper{
+  text-align: center;
+}
+
+audio {
+
+}
+
+.oneAudio {
+  display: inline-block;
+  text-align : left;
+  background: white;
+  width: 40%;
+  height : 25em;
+
+  box-shadow: 0px 0px 15px 5px gray;
+  border-radius: 5px;
+}
+
+#saveTextButton{
+  margin-right : 3%;
+  width : 6%;
+  height: 7%;
+  background: white;
+}
+
+#saveTextButton:focus {
+  outline:none;
+}
+#saveTextButton:active{
+  background: lightgray;
+}
+
+
+#stopOrStartRecordingButton:hover{
+  box-shadow: 0px 0px 15px 5px lightgray;
+  border-radius: 50%;
+}

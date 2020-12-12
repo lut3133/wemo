@@ -8,6 +8,7 @@ import RegisterPage from "./RegisterPage";
 import MemoPage from "./MemoPage";
 import {Header} from "../components/Header";
 import NavBar from "../components/NavBar";
+import AudioPage from "./AudioPage";
 
 class Routes extends React.Component {
     render() {
@@ -23,6 +24,7 @@ class Routes extends React.Component {
                     <Route path='/login' component={LoginPage}/>
                     <Route path='/register' component={RegisterPage}/>
                     <Route path='/memo' component={MemoPage}/>
+                    <Route path='/audio' component={AudioPage}/>
                     <Route path='/' component={Home}/>
                 </Switch>
             </Router>

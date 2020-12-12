@@ -36,7 +36,7 @@ class MemoList extends React.Component{
                           dispatchDeleteMemo = {()=> deleteMemo(memo.title,memo.text)}/>
                           )}
                 {this.state.existMemos.map(memo =>{
-                    if(memo.type === "file"){
+                    if(memo.type === "text"){
                         return <List title = {memo.name}
                                      text = {memo.content}
                                      textLength = {memo.content.length}
