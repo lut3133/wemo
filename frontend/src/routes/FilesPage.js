@@ -99,7 +99,7 @@ class FilesPage extends React.Component {
             <div>
                 <div class="wrapper">
                     <div class="currentPath">
-                        현재 위치: /{this.state.cur_path === "." ? "" : this.state.cur_path}
+                        현재 위치: \{this.state.cur_path === "." ? "" : this.state.cur_path}
                     </div>
                     <div class="newFolder">
                         <button id="newFolderButton" onClick={this.clickNewFolderButtion}>새 폴더</button>
@@ -187,10 +187,9 @@ class FilesPage extends React.Component {
                                 return (<tr>
                                     <td class="fileNametd" >
                                         <Link to={{
-                                            pathname : "/memo",
+                                            pathname : "/audio",
                                             state : {
                                                 name : file.name,
-                                                content : null
                                             }
                                         }}>
                                             {file.name}
