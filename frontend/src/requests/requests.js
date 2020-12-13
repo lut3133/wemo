@@ -75,6 +75,10 @@ export async function postAudioFile(blob,fileName){
     return result.data
 }
 
+export async function postAudioUrl({audio_file_name}){
+    const result = await instance.post('/audioUrl',{audio_file_name});
+    return result.data
+}
 
 export async function postRename({old_name,new_name}){
     const result = await instance.post('/rename',{old_name,new_name});

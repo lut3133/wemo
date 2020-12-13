@@ -1,21 +1,37 @@
 import React from "react"
 import {Link} from "react-router-dom";
-import {postAudioFile} from "../requests/requests";
+import {postAudioFile, postAudioUrl, postFileContent} from "../requests/requests";
 import startRecordingButton from "../images/start-audio-recording-button.png";
 import stopRecordingButton from "../images/stop-audio-recording-button.png";
+import ReactDOM from 'react-dom';
 
 
 var audioData = [];
 
 class Audio extends React.Component {
 
+    //audio = new Audio("http://localhost:3000/audioUrl/" + this.props.fileName);
+
     constructor(props) {
         super(props);
+
+        let recordModeValue;
+
+        if(this.props.fileName !== ""){
+            recordModeValue = false;
+        }
+        else{
+            recordModeValue = true;
+        }
+
         this.state = {
+            recordMode : recordModeValue,
             isRecording : false,
             src : startRecordingButton,
-            title : ""
+            title : this.props.fileName,
+            audioSourceUrl : ""
         }
+
         this.clickButton = this.clickButton.bind(this);
     }
 
@@ -138,26 +154,70 @@ class Audio extends React.Component {
 
 
     render() {
-        return (
-            <React.Fragment>
+        console.log(this.state.recordMode);
+        if(this.state.recordMode === true){
+            return (
+                <React.Fragment>
 
-                <div class = "oneAudio">
-                    <input placeholder="제목을 입력해주세요." type= "text" class = "oneAudioTitle" value={this.state.title} onChange={this.updateTitle}/>
-                    <br/>
-                    <hr/>
-                    <br/><br/><br/>
-                    <div className="audioComponentsWrapper">
-                    <audio controls></audio>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <img id="stopOrStartRecordingButton" src={this.state.src} onClick={this.clickButton} width="50" height="50"/>
+                    <div class = "oneAudio">
+                        <input placeholder="제목을 입력해주세요." type= "text" class = "oneAudioTitle" value={this.state.title} onChange={this.updateTitle}/>
+                        <br/>
+                        <hr/>
+                        <br/><br/><br/>
+                        <div className="audioComponentsWrapper">
+                            <audio controls ></audio>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <img id="stopOrStartRecordingButton" src={this.state.src} onClick={this.clickButton} width="50" height="50"/>
+                        </div>
                     </div>
-                </div>
-            </React.Fragment>
-        )
+                </React.Fragment>
+            )
+        }
+        else{
+            return (
+                <React.Fragment>
+
+                    <div class = "oneAudio">
+                        <input placeholder="제목을 입력해주세요." type= "text" class = "oneAudioTitle" value={this.state.title} onChange={this.updateTitle}/>
+                        <br/>
+                        <hr/>
+                        <br/><br/><br/>
+                        <div className="audioComponentsWrapper">
+                            <audio controls src = {"http://localhost:3000/audioUrl/"+this.props.fileName}/>
+
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
+                    </div>
+                </React.Fragment>
+            )
+        }
+
     }
+
+    componentDidMount() {
+        if(this.state.title !== ""){
+            //load data to audio tag
+            let data = {
+                audio_file_name : this.state.title
+            }
+            //let temp = postAudioUrl(data);
+            //console.log(temp);
+            //this.setState({audioSourceUrl : "http://localhost:3000/audioUrl/" + this.props.fileName});
+            //const element = ReactDOM.findDOMNode(this);
+            //const audio = element.querySelector('audio');
+            //const source = audio.querySelector('source');
+            //source.src = "http://localhost:3000/audioUrl/" + this.props.fileName;
+            //console.log(source.src);
+            //audio.load();
+        }
+    }
+
 }
 
 const saveBlobData = (event) =>{

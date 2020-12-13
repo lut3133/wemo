@@ -5,13 +5,14 @@ export default class AudioPage extends React.Component {
 
     constructor(props){
         super(props);
+        this.state = {name: this.props.location.state.name}
     }
 
     render()
     {
         return (
             <div class="audioWrapper">
-                <Audio/>
+                <Audio fileName = {this.state.name}/>
             </div>
         );
     }

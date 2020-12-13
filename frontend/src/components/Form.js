@@ -21,6 +21,7 @@ class Form extends React.Component{
             originalTitle :this.props.fileName,
             title: this.props.fileName,
             content: this.props.fileContent,
+            modificationDate : this.props.modificationDate
         };
         this.editMemo = this.editMemo.bind(this);
         //this.createMemo = this.createMemo.bind(this);
@@ -97,6 +98,25 @@ class Form extends React.Component{
 
     }
 
+    clickNewFolderButtion(){
+        var mkdirModal = document.getElementById("mkdirModal");
+        var mkdirBtn = document.getElementById("modificationDateandHistory");
+        var span1 = document.getElementById("mkdirModalClose");
+
+        mkdirBtn.onclick = function() {
+            mkdirModal.style.display = "block";
+        }
+        span1.onclick = function() {
+            mkdirModal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == mkdirModal) {
+                mkdirModal.style.display = "none";
+            }
+        }
+    }
+
     render(){
         return (
             <React.Fragment>
@@ -106,7 +126,17 @@ class Form extends React.Component{
                     <hr/>
                     <textarea placeholder="내용을 입력해주세요." class = "oneMemoContent" value={this.state.content} onChange={this.updateContent}></textarea>
                     <br/><br/><br/>
+                    <span id="modificationDateandHistory" onClick={this.clickNewFolderButtion}>마지막 수정일: {this.state.modificationDate}</span>
                     <button id = "saveTextButton" onClick={this.editMemo}>저장</button>
+                </div>
+                <div id="mkdirModal" className="modal">
+                    <div className="modal-content">
+                        <span id="mkdirModalClose" className="close">&times;</span>
+                        <h2>수정 내역</h2>
+                        <span>폴더 이름:</span>
+                        <input id="newDirName" value={this.state.new_dir_name} onChange={this.updateNewDirName} type="text"/>
+                        <button onClick={this.clickRequestNeFolder}>폴더 생성</button>
+                    </div>
                 </div>
             </React.Fragment>)
     }

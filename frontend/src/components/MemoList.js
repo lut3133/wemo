@@ -40,7 +40,8 @@ class MemoList extends React.Component{
                         return <List title = {memo.name}
                                      text = {memo.content}
                                      textLength = {memo.content.length}
-                                     dispatchDeleteMemo = {()=> deleteMemo(memo.name,memo.content)}/>
+                                     dispatchDeleteMemo = {()=> deleteMemo(memo.name,memo.content)}
+                                    modificationDate = {memo.modificationDate}/>
                     }
                 }
                 )}

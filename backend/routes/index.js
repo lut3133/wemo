@@ -56,7 +56,10 @@ router.get('/get-file-infos', function(req, res, next) {
         name : element,
         modificationDate : stat.mtime.getFullYear().toString()
             + "-" + (stat.mtime.getMonth()+1).toString()
-            + "-" + stat.mtime.getDate().toString(),
+            + "-" + stat.mtime.getDate().toString()
+            + " " + stat.mtime.getHours()
+            + ":" + stat.mtime.getMinutes()
+            + ":" + stat.mtime.getSeconds(),
         size : size,
         type : type
       }
@@ -121,7 +124,10 @@ router.get('/get-file-contents-infos',  function(req, res, next) {
         content : file_content.toString(),
         modificationDate : stat.mtime.getFullYear().toString()
             + "-" + (stat.mtime.getMonth()+1).toString()
-            + "-" + stat.mtime.getDate().toString(),
+            + "-" + stat.mtime.getDate().toString()
+            + " " + stat.mtime.getHours()
+            + ":" + stat.mtime.getMinutes()
+            + ":" + stat.mtime.getSeconds(),
         size : size,
         type : type
       }
@@ -247,6 +253,16 @@ router.post('/saveAudioFile', processMultipart.single( "blob" ),function(req, re
 
   fs.writeFileSync(path.join(path.join(root_path,cur_path),req.file.originalname), req.file.buffer);
   res.send();
+});
+
+router.get('/audioUrl/:name',function(req, res, next) {
+
+  //const {audio_file_name} = req.body;
+  console.log(path.join(root_path,cur_path));
+
+  res.download(path.join(path.join(root_path,cur_path),req.params.name));
+  //fs.writeFileSync(, req.file.buffer);
+  //res.send();
 });
 
 

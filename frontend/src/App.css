@@ -295,7 +295,7 @@ td{
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 50%; /* Could be more or less, depending on screen size */
 }
 .close {
   color: #aaa;
@@ -362,4 +362,12 @@ audio {
 #stopOrStartRecordingButton:hover{
   box-shadow: 0px 0px 15px 5px lightgray;
   border-radius: 50%;
+}
+
+#modificationDateandHistory{
+  margin-right : 5%;
+}
+#modificationDateandHistory:hover{
+  cursor: pointer;
+  text-decoration:underline;
 }

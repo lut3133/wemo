@@ -207,10 +207,9 @@ class FilesPage extends React.Component {
 
                                     <td className="fileOpen" >
                                         <Link to={{
-                                            pathname : "/memo",
+                                            pathname : "/audio",
                                             state : {
                                                 name : file.name,
-                                                content : null
                                             }
                                         }}>
                                             열기

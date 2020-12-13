@@ -7,7 +7,8 @@ export default class List extends React.Component{
         super(props);
         this.state = {isClicked: false,
                         title: props.title,
-                        content: props.text};
+                        content: props.text,
+            modificationDate : props.modificationDate};
         this.deleteMemo = this.deleteMemo.bind(this);
     }
 
@@ -39,7 +40,8 @@ export default class List extends React.Component{
                     pathname : "/memo",
                     state : {
                         name : this.state.title,
-                        content : this.state.content
+                        content : this.state.content,
+                        modificationDate : this.state.modificationDate
                     }
                 }}>
                     <div class="briefMemo">
