@@ -85,3 +85,7 @@ export async function postRename({old_name,new_name}){
     return result.data
 }
 
+export async function postFileHistory({file_name}){
+    const result = await instance.post('/file-history',{file_name});
+    return result.data
+}

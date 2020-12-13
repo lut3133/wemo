@@ -3,6 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
+const mongooseAutoInc = require('mongoose-auto-increment');
+
+mongoose.connect('mongodb://localhost:27017/wemo', {
+  useFindAndModify: false,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+mongooseAutoInc.initialize(mongoose.connection);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

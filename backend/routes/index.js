@@ -186,7 +186,42 @@ router.post('/editfile', function(req, res, next) {
       console.log("writefile err");
     }
   });
-  res.send();
+
+  File.findOne({path: path.join(cur_path,file_name)}).then((file)=>{
+    const fileHistory = new FileHistory({
+      fileId : file._id,
+      date : new Date(),
+      type : "update"
+    })
+    console.log(fileHistory);
+    fileHistory.save().then(()=>{
+      res.send();
+    })
+  }).catch(()=>{
+    const stat = fs.statSync(path.join(path.join(root_path,cur_path),file_name));
+    stat.mtime;
+    console.log(stat.mtime);
+    const file = new File({
+      path : path.join(cur_path,file_name),
+      date : new Date(),
+      type : "text"
+    })
+
+    file.save().then(()=>{
+      File.findOne({ path : path.join(cur_path,file_name)}).then((file)=>{
+        console.log(file);
+        const fileHistory = new FileHistory({
+          fileId : file._id,
+          date : new Date(),
+          type : "create"
+        })
+        console.log(fileHistory);
+        fileHistory.save().then(()=>{
+          res.send();
+        })
+      })
+    })
+  })
 });
 
 router.post('/rmdir', function(req, res, next) {
@@ -212,7 +247,17 @@ router.post('/rmFile', function(req, res, next) {
       console.log("rmFile err");
     }
   });
-  res.send();
+  File.findOne({path: path.join(cur_path,file_name)}).then((file)=>{
+    const fileHistory = new FileHistory({
+      fileId : file._id,
+      date : new Date(),
+      type : "delete"
+    })
+    console.log(fileHistory);
+    fileHistory.save().then(()=>{
+      res.send();
+    })
+  })
 });
 
 router.post('/rename', function(req, res, next) {
@@ -252,7 +297,32 @@ router.get('/pwd', function(req, res, next) {
 router.post('/saveAudioFile', processMultipart.single( "blob" ),function(req, res, next) {
 
   fs.writeFileSync(path.join(path.join(root_path,cur_path),req.file.originalname), req.file.buffer);
-  res.send();
+
+  const stat = fs.statSync(path.join(path.join(root_path,cur_path),req.file.originalname));
+  stat.mtime;
+  console.log(stat.mtime);
+  const file = new File({
+    path : path.join(cur_path,req.file.originalname),
+    date : new Date(),
+    type : "audio"
+  })
+
+  file.save().then(()=>{
+    File.findOne({ path : path.join(cur_path,req.file.originalname)}).then((file)=>{
+      console.log(file);
+      const fileHistory = new FileHistory({
+        fileId : file._id,
+        date : new Date(),
+        type : "create"
+      })
+      console.log(fileHistory);
+      fileHistory.save().then(()=>{
+        res.send();
+      })
+    })
+  })
+
+
 });
 
 router.get('/audioUrl/:name',function(req, res, next) {
@@ -265,5 +335,60 @@ router.get('/audioUrl/:name',function(req, res, next) {
   //res.send();
 });
 
+var FileHistory = require('../models/fileHistory');
+var File = require('../models/file');
+
+router.get('/dbtest',function(req, res, next) {
+
+  saveHistory("bd","delete").save().then(()=>{
+    res.send();
+  });
+});
+
+var saveFile = (file_name,type) => {
+  const stat = fs.statSync(path.join(path.join(root_path,cur_path),file_name));
+  stat.mtime;
+  console.log(stat.mtime);
+  const file = new File({
+    path : path.join(cur_path,file_name),
+    date : new Date(),
+    type : type
+  })
+  return file;
+}
+
+
+var saveHistory = (file_name,type) => {
+  console.log("Bbbbbbbbbbbbbbbbb"+path.join(cur_path,file_name));
+  File.findOne({ path : path.join(cur_path,file_name)}).then((file)=>{
+    console.log(file);
+    const fileHistory = new FileHistory({
+      fileId : file._id,
+      date : new Date(),
+      type : type
+    })
+    console.log(fileHistory);
+    return fileHistory;
+  })
+
+}
+
+router.post('/file-history',function(req, res, next) {
+  const {file_name} = req.body;
+  File.findOne({ path : path.join(cur_path,file_name)}).then((file)=>{
+    console.log(file);
+    FileHistory.find({fileId : file._id}, function(err, datas){
+      console.log(datas);
+      if(err){
+        res.send(err);
+      }
+      else{
+        if(datas.length !==0){
+          res.json(datas);
+        }
+      }
+    })
+  })
+});
 
 module.exports = router;

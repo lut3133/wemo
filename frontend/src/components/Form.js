@@ -4,12 +4,13 @@ import { connect } from 'react-redux'
 import {
     postAudioFile,
     postEditFile,
-    postFileContent,
+    postFileContent, postFileHistory,
     postMakeFile,
     postRename,
     postSttTest
 } from "../requests/requests";
 import NavBar from "./NavBar";
+import List from "./List";
 
 
 
@@ -21,7 +22,8 @@ class Form extends React.Component{
             originalTitle :this.props.fileName,
             title: this.props.fileName,
             content: this.props.fileContent,
-            modificationDate : this.props.modificationDate
+            modificationDate : this.props.modificationDate,
+            history : []
         };
         this.editMemo = this.editMemo.bind(this);
         //this.createMemo = this.createMemo.bind(this);
@@ -133,9 +135,15 @@ class Form extends React.Component{
                     <div className="modal-content">
                         <span id="mkdirModalClose" className="close">&times;</span>
                         <h2>수정 내역</h2>
-                        <span>폴더 이름:</span>
-                        <input id="newDirName" value={this.state.new_dir_name} onChange={this.updateNewDirName} type="text"/>
-                        <button onClick={this.clickRequestNeFolder}>폴더 생성</button>
+                        {this.state.history.reverse().map(eachHistory =>
+                            <div>
+                                <hr/>
+                                <li>
+                                    {eachHistory.date+" "+eachHistory.type}
+                                </li>
+
+                            </div>
+                        )}
                     </div>
                 </div>
             </React.Fragment>)
@@ -148,6 +156,14 @@ class Form extends React.Component{
             }
             postFileContent(data).then(res =>{
                 this.setState({ content : res.file_content});
+            })
+        }
+        if(this.state.title !== null){
+            let data = {
+                file_name : this.state.originalTitle
+            }
+            postFileHistory(data).then(res =>{
+                this.setState({history : res});
             })
         }
     }
