@@ -12,7 +12,7 @@ class Routes extends React.Component {
     render() {
         return (
             <Router>
-                <Link to="/home">
+                <Link to="/memos">
                     <Header/>
                 </Link>
                 <NavBar/>
@@ -21,7 +21,7 @@ class Routes extends React.Component {
                     <Route path='/file' component={FilesPage}/>
                     <Route path='/memo' component={MemoPage}/>
                     <Route path='/audio' component={AudioPage}/>
-                    <Route path='/' component={Home}/>
+                    <Route path='/' component={MemosPage}/>
                 </Switch>
             </Router>
         )
