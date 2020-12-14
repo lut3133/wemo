@@ -1,35 +1,22 @@
 var express = require('express');
 var router = express.Router();
 
-var http = require('http');
 var fs = require('fs');
-var url = require('url');
 var path = require('path');
-var qs = require('querystring');
 var root_path = path.resolve('./fs');
 var cur_path = ""
-var cors = require('cors');
 
 var multer           = require ( 'multer' );
 var processMultipart = multer ( { storage : multer.memoryStorage () } );
 
+var FileHistory = require('../models/fileHistory');
+var File = require('../models/file');
+
 const util = require('util');
 
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
 router.get('/get-file-infos', function(req, res, next) {
-  console.log(path.join(root_path,cur_path));
   fs.readdir(path.join(root_path,cur_path), function(err,data){
-
-    lsinfo_li = "";
-    lsinfo_li += "<li class=\"dir\">" +"<div" + " onclick='mvdir(this);'>" +".."+ "</div>"
-        + "</li>";
-
-    datas = [];
 
     data.forEach(function(element,index){
       const stat = fs.statSync(path.join(path.join(root_path,cur_path),element));
@@ -67,8 +54,6 @@ router.get('/get-file-infos', function(req, res, next) {
 
     res.json(data);
 
-    console.log(lsinfo_li);
-
   });
 });
 
@@ -81,10 +66,7 @@ function readFileFunction(file_name) {
 
 
 router.get('/get-file-contents-infos',  function(req, res, next) {
-  console.log(path.join(root_path,cur_path));
   fs.readdir(path.join(root_path,cur_path), function(err,data){
-
-
 
     data.reverse();
     data.forEach(async function(element,index){
@@ -113,7 +95,6 @@ router.get('/get-file-contents-infos',  function(req, res, next) {
           }
         }
 
-        console.log(file_content.toString());
       }
       else if(stat.isDirectory()){
         size = "-";
@@ -132,7 +113,6 @@ router.get('/get-file-contents-infos',  function(req, res, next) {
         type : type
       }
       if(index === data.length-1){
-        console.log("lkajkljsld");
         res.json(data);
       }
     });
@@ -145,7 +125,6 @@ router.get('/get-file-contents-infos',  function(req, res, next) {
 router.post('/cd', function(req, res, next) {
   const {dir_name} = req.body;
 
-  console.log(path.join(path.join(root_path,cur_path),dir_name));
   cur_path = path.join(cur_path, dir_name);
   res.send();
 });
@@ -153,7 +132,6 @@ router.post('/cd', function(req, res, next) {
 router.post('/mkdir', function(req, res, next) {
   const {new_dir_name} = req.body;
 
-  console.log(path.join(path.join(root_path,cur_path),new_dir_name));
   fs.mkdir(path.join(path.join(root_path,cur_path),new_dir_name), function(err){
     if(err){
       console.log("mkdir err");
@@ -165,7 +143,6 @@ router.post('/mkdir', function(req, res, next) {
 router.post('/readfile', function(req, res, next) {
   const {file_name} = req.body;
 
-  console.log(path.join(path.join(root_path,cur_path),file_name));
   fs.readFile(path.join(path.join(root_path,cur_path),file_name),{encoding:"utf-8",flag:"r"}, function(err, data){
     if(err){
       console.log("readFile err");
@@ -193,14 +170,12 @@ router.post('/editfile', function(req, res, next) {
       date : new Date(),
       type : "update"
     })
-    console.log(fileHistory);
     fileHistory.save().then(()=>{
       res.send();
     })
   }).catch(()=>{
     const stat = fs.statSync(path.join(path.join(root_path,cur_path),file_name));
     stat.mtime;
-    console.log(stat.mtime);
     const file = new File({
       path : path.join(cur_path,file_name),
       date : new Date(),
@@ -209,13 +184,11 @@ router.post('/editfile', function(req, res, next) {
 
     file.save().then(()=>{
       File.findOne({ path : path.join(cur_path,file_name)}).then((file)=>{
-        console.log(file);
         const fileHistory = new FileHistory({
           fileId : file._id,
           date : new Date(),
           type : "create"
         })
-        console.log(fileHistory);
         fileHistory.save().then(()=>{
           res.send();
         })
@@ -227,7 +200,6 @@ router.post('/editfile', function(req, res, next) {
 router.post('/rmdir', function(req, res, next) {
   const {dir_name} = req.body;
 
-  console.log(path.join(path.join(root_path,cur_path),dir_name));
   fs.rmdir(path.join(path.join(root_path,cur_path),dir_name), function(err){
     if(err){
       console.log("rmdir err");
@@ -241,7 +213,6 @@ router.post('/rmdir', function(req, res, next) {
 router.post('/rmFile', function(req, res, next) {
   const {file_name} = req.body;
 
-  console.log(path.join(path.join(root_path,cur_path),file_name));
   fs.unlink(path.join(path.join(root_path,cur_path),file_name), function(err){
     if(err){
       console.log("rmFile err");
@@ -253,7 +224,6 @@ router.post('/rmFile', function(req, res, next) {
       date : new Date(),
       type : "delete"
     })
-    console.log(fileHistory);
     fileHistory.save().then(()=>{
       res.send();
     })
@@ -263,7 +233,6 @@ router.post('/rmFile', function(req, res, next) {
 router.post('/rename', function(req, res, next) {
   const {new_name,old_name} = req.body;
 
-  console.log(path.join(path.join(root_path,cur_path),new_name));
   fs.rename(path.join(path.join(root_path,cur_path),old_name),path.join(path.join(root_path,cur_path),new_name), function(err){
     if(err){
       console.log("rename err");
@@ -272,18 +241,7 @@ router.post('/rename', function(req, res, next) {
   res.send();
 });
 
-router.post('/api/login',cors(), function(req, res, next) {
-  const {id,password} = req.body;
 
-  console.log(id,password);
-  res.send();
-});
-
-router.options('/api/login', function(req, res, next) {
-
-  console.log(req.headers);
-  res.send();
-});
 
 router.get('/pwd', function(req, res, next) {
 
@@ -326,29 +284,14 @@ router.post('/saveAudioFile', processMultipart.single( "blob" ),function(req, re
 });
 
 router.get('/audioUrl/:name',function(req, res, next) {
-
-  //const {audio_file_name} = req.body;
   console.log(path.join(root_path,cur_path));
-
   res.download(path.join(path.join(root_path,cur_path),req.params.name));
-  //fs.writeFileSync(, req.file.buffer);
-  //res.send();
 });
 
-var FileHistory = require('../models/fileHistory');
-var File = require('../models/file');
-
-router.get('/dbtest',function(req, res, next) {
-
-  saveHistory("bd","delete").save().then(()=>{
-    res.send();
-  });
-});
 
 var saveFile = (file_name,type) => {
   const stat = fs.statSync(path.join(path.join(root_path,cur_path),file_name));
   stat.mtime;
-  console.log(stat.mtime);
   const file = new File({
     path : path.join(cur_path,file_name),
     date : new Date(),
@@ -359,15 +302,12 @@ var saveFile = (file_name,type) => {
 
 
 var saveHistory = (file_name,type) => {
-  console.log("Bbbbbbbbbbbbbbbbb"+path.join(cur_path,file_name));
   File.findOne({ path : path.join(cur_path,file_name)}).then((file)=>{
-    console.log(file);
     const fileHistory = new FileHistory({
       fileId : file._id,
       date : new Date(),
       type : type
     })
-    console.log(fileHistory);
     return fileHistory;
   })
 
@@ -376,15 +316,22 @@ var saveHistory = (file_name,type) => {
 router.post('/file-history',function(req, res, next) {
   const {file_name} = req.body;
   File.findOne({ path : path.join(cur_path,file_name)}).then((file)=>{
-    console.log(file);
     FileHistory.find({fileId : file._id}, function(err, datas){
-      console.log(datas);
+      datas.map((data) =>{
+        if(data.type === "create"){
+          data.type = "생성";
+        }
+        else if(data.type ==="update"){
+          data.type = "수정";
+        }
+
+      })
       if(err){
         res.send(err);
       }
       else{
         if(datas.length !==0){
-          res.json(datas);
+          res.json(datas.reverse());
         }
       }
     })

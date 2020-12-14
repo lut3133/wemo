@@ -24,17 +24,12 @@ export default class List extends React.Component{
         postDeleteFile(data);
         window.location.replace("/memo");
     }
-/*
-    <button onClick={this.createMemo}>수정</button>
-    <button onClick={this.deleteMemo}>삭제</button>
- */
+
     gotoMemoEditPage(){
     }
 
 
     render(){
-        const {dispatchDeleteMemo} = this.props
-
         return (
                 <Link to={{
                     pathname : "/memo",
@@ -48,7 +43,7 @@ export default class List extends React.Component{
                         <input type="text" class="manyMemoTitle" value={this.state.title.split(".")[0]} onChange={this.updateTitle}/>
                         <br/>
                         <hr/>
-                        <input type="text" class="manyMemoContent" value={this.state.content} onChange={this.updateContent}/>
+                        <textarea  class="manyMemoContent" value={this.state.content} onChange={this.updateContent}/>
                         <br/>
                     </div>
                 </Link>)

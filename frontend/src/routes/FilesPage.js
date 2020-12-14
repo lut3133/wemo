@@ -3,9 +3,7 @@ import React from "react";
 import {getLs, getPwd, postCd, postDeleteFile, postMkDir, postRmDir} from "../requests/requests";
 import {deleteMemo} from "../actions/memo";
 import {connect} from "react-redux";
-import {Header} from "../components/Header";
 import {Link} from "react-router-dom";
-import NavBar from "../components/NavBar";
 
 class FilesPage extends React.Component {
 
@@ -16,7 +14,6 @@ class FilesPage extends React.Component {
             cur_path : ".",
             new_dir_name : ""
         }
-        this.open = this.open.bind(this);
         this.clickDirName = this.clickDirName.bind(this);
         this.clickOpen = this.clickOpen.bind(this);
         this.clickDeleteDir = this.clickDeleteDir.bind(this);
@@ -24,25 +21,6 @@ class FilesPage extends React.Component {
         this.clickRequestNeFolder = this.clickRequestNeFolder.bind(this);
     }
 
-    deleteMemo(fileName){
-
-        this.props.dispatchDeleteMemo();
-        const data = {
-            file_name : fileName
-        }
-        postDeleteFile(data);
-        window.location.replace("/memo");
-    }
-
-    open(type){
-        if(type === "file"){
-
-        }
-        else if(type === "dir"){
-
-        }
-        window.location.replace("/home");
-    }
     clickDirName(dir_name){
         let data = {
             dir_name : dir_name
@@ -77,7 +55,7 @@ class FilesPage extends React.Component {
         }
 
         window.onclick = function(event) {
-            if (event.target == mkdirModal) {
+            if (event.target === mkdirModal) {
                 mkdirModal.style.display = "none";
             }
         }
@@ -154,7 +132,8 @@ class FilesPage extends React.Component {
                                             pathname : "/memo",
                                             state : {
                                                 name : file.name,
-                                                content : null
+                                                content : null,
+                                                modificationDate : file.modificationDate
                                             }
                                         }}>
                                             {file.name}
@@ -174,7 +153,8 @@ class FilesPage extends React.Component {
                                             pathname : "/memo",
                                             state : {
                                                 name : file.name,
-                                                content : null
+                                                content : null,
+                                                modificationDate : file.modificationDate
                                             }
                                         }}>
                                             열기
@@ -217,7 +197,7 @@ class FilesPage extends React.Component {
 
                                 </tr>)
                             }
-
+                            return <span></span>
                             }
                         )}
                     </table>

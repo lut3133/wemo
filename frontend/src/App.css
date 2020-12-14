@@ -100,6 +100,7 @@ li{
   width : 40%;
   height : 10em;
   border-radius: 5px;
+  overflow: hidden;
 }
 
 .manyMemoTitle{
@@ -112,8 +113,18 @@ li{
 .manyMemoContent{
   text-align : left;
   width : 100%;
-  padding-top: 10px;
-  padding-left: 10px;
+  height :40%;
+  padding: 0;
+  border-width: 0;
+  border: none;
+  resize: none;
+}
+
+.manyMemoContent:focus{
+  outline:none;
+}
+.manyMemoContent::-webkit-scrollbar{
+  display: none;
 }
 
 
@@ -200,7 +211,7 @@ td{
 
 
 .fileNametd{
-  width: 75%;
+  width: 50%;
   text-align : left;
 }
 .fileNametd:hover{
@@ -218,7 +229,7 @@ td{
 }
 
 .fileDelete{
-  width: 4%;
+  width: 5%;
 }
 .fileDelete:hover{
   cursor: pointer;
@@ -226,7 +237,7 @@ td{
 }
 
 .fileOpen{
-  width: 4%;
+  width: 5%;
 }
 .fileOpen:hover{
   cursor: pointer;

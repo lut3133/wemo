@@ -26,7 +26,7 @@ class MemoList extends React.Component{
     }
 
     render() {
-        const {state, totalValue, deleteMemo, history} = this.props;
+        const {state, deleteMemo} = this.props;
         return(
             <div>
                 {state.map(memo =>
@@ -43,6 +43,7 @@ class MemoList extends React.Component{
                                      dispatchDeleteMemo = {()=> deleteMemo(memo.name,memo.content)}
                                     modificationDate = {memo.modificationDate}/>
                     }
+                    return <span></span>
                 }
                 )}
             </div>)

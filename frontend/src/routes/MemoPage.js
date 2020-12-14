@@ -1,11 +1,7 @@
 import '../App.css';
 import React from "react";
-import {Header} from "../components/Header";
-import MemoList from "../components/MemoList";
 import {Link} from 'react-router-dom';
 import Form from "../components/Form";
-import {postFileContent} from "../requests/requests";
-import buttonImg from "../images/add-memo-button.png";
 import audioButtonImg from "../images/add-audio-button.png";
 
 
@@ -34,7 +30,7 @@ export default class MemoPage extends React.Component {
                     }
                 }}>
                     <div class = "createMemo">
-                        <img class="createAudio" src={audioButtonImg} width="50" height="50"/>
+                        <img class="createAudio" src={audioButtonImg} alt="녹음 파일 추가 버튼" width="50" height="50"/>
                     </div>
                 </Link>
             </div>

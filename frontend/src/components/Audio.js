@@ -1,16 +1,12 @@
 import React from "react"
-import {Link} from "react-router-dom";
-import {postAudioFile, postAudioUrl, postFileContent} from "../requests/requests";
+import {postAudioFile} from "../requests/requests";
 import startRecordingButton from "../images/start-audio-recording-button.png";
 import stopRecordingButton from "../images/stop-audio-recording-button.png";
-import ReactDOM from 'react-dom';
 
 
 var audioData = [];
 
 class Audio extends React.Component {
-
-    //audio = new Audio("http://localhost:3000/audioUrl/" + this.props.fileName);
 
     constructor(props) {
         super(props);
@@ -170,7 +166,7 @@ class Audio extends React.Component {
                             <br/>
                             <br/>
                             <br/>
-                            <img id="stopOrStartRecordingButton" src={this.state.src} onClick={this.clickButton} width="50" height="50"/>
+                            <img id="stopOrStartRecordingButton" src={this.state.src} onClick={this.clickButton} alt="녹음 시작 종료 버튼" width="50" height="50"/>
                         </div>
                     </div>
                 </React.Fragment>
@@ -198,24 +194,6 @@ class Audio extends React.Component {
             )
         }
 
-    }
-
-    componentDidMount() {
-        if(this.state.title !== ""){
-            //load data to audio tag
-            let data = {
-                audio_file_name : this.state.title
-            }
-            //let temp = postAudioUrl(data);
-            //console.log(temp);
-            //this.setState({audioSourceUrl : "http://localhost:3000/audioUrl/" + this.props.fileName});
-            //const element = ReactDOM.findDOMNode(this);
-            //const audio = element.querySelector('audio');
-            //const source = audio.querySelector('source');
-            //source.src = "http://localhost:3000/audioUrl/" + this.props.fileName;
-            //console.log(source.src);
-            //audio.load();
-        }
     }
 
 }
