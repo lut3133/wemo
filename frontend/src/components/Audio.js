@@ -103,7 +103,7 @@ class Audio extends React.Component {
                 //const mime = ['audio/wav', 'audio.mpeg','audio/webm','audio/ogg'].filter(MediaRecorder.isTypeSupported)[0];
                 const mediaRecorder = new MediaRecorder(stream);
                 console.log(mediaRecorder);
-                mediaRecorder.start();
+                mediaRecorder.start(2000);
 
                 mediaRecorder.addEventListener("dataavailable",saveBlobData);
 
@@ -137,7 +137,6 @@ class Audio extends React.Component {
                 isRecording : false,
                 src : startRecordingButton
             });
-            window.location.replace("/memos");
         }
         else{
             this.startRecordAudio();
